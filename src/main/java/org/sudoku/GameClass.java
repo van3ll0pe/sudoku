@@ -9,12 +9,14 @@ public class GameClass {
     private boolean quit;
     private MoveStack undoStack;
     private MoveStack redoStack;
+    private Scanner scan;
 
     public GameClass() throws Exception{
         this.grid = new Grid(9, 9);
         this.quit = false;
         this.undoStack = new MoveStack();
         this.redoStack = new MoveStack();
+        scan = new Scanner(System.in);
     }
 
     public GameClass(Number[][] tab) throws Exception{
@@ -22,6 +24,7 @@ public class GameClass {
         this.quit = false;
         this.undoStack = new MoveStack();
         this.redoStack = new MoveStack();
+        scan = new Scanner(System.in);
     }
 
     public GameClass(File file) throws Exception {
@@ -55,6 +58,7 @@ public class GameClass {
         this.quit = false;
         this.undoStack = new MoveStack();
         this.redoStack = new MoveStack();
+        scan = new Scanner(System.in);
     }
 
     public void quit() {
@@ -63,10 +67,14 @@ public class GameClass {
     }
 
     public void getAction() throws Exception {
-        Scanner scanner = new Scanner(System.in);
 
         System.out.println("[q/Q] : Quit game\n[s/S] : solver\n[m/M] : Move element in game\n[r/R] : redo\n[u/U] : undo");
-        switch(scanner.next().charAt(0)) {
+
+        String input = "";
+        while (input.isEmpty()) {
+            input = scan.nextLine();
+        }
+        switch(input.charAt(0)) {
             case 'q' : quit();
                         break;
             case 'Q' : quit();
@@ -89,29 +97,27 @@ public class GameClass {
             default: break;
         }
 
-        scanner.close();
     }
 
     private Triplet<Integer, Integer, Number> getInput() {
-        Scanner scanner = new Scanner(System.in);
 
         System.out.println("Choose X position : (1 - " + (this.grid.get_width()) + ") : ");
 
         int x = 0;
         do {
-            x = scanner.nextInt(); //the x position
+            x = scan.nextInt(); //the x position
         } while(!(x >= 1 && x <= 9));
         x -= 1;
 
         System.out.println("Choose Y position : (1 - " + (this.grid.get_height()) + ") : ");
         int y = 0;
         do {
-            y = scanner.nextInt(); //the x position
+            y = scan.nextInt(); //the x position
         } while(!(y >= 1 && y <= 9));
         y -= 1;
 
         System.out.println("Choose value : (1 - 9) (anything else to not select) : ");
-        char c = scanner.next().charAt(0);
+        char c = scan.next().charAt(0);
         Number val = switch (c) {
             case '1' -> Number.ONE;
             case '2' -> Number.TWO;
@@ -124,7 +130,7 @@ public class GameClass {
             case '9' -> Number.NINE;
             default -> Number.NONE;
         };
-        scanner.close();
+
         return new Triplet<>(x, y, val);
     }
 
