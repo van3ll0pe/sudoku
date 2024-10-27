@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+run {
+    standardInput = System.in
+}
+
+group = 'org.sudoku'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'org.javatuples:javatuples:1.2'
+
+}
+
+application {
+    mainClass = "org.sudoku.Main"
+}
+
+test {
+    useJUnitPlatform()
+}
