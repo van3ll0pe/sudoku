@@ -28,16 +28,16 @@ public class GameClass {
     }
 
     public GameClass(File file) throws Exception {
-        Scanner scan = new Scanner(file);
+        Scanner scanFile = new Scanner(file);
 
         int cptr = 0;
         Number[][] tab = new Number[9][9];
 
-        while (scan.hasNextLine()) {
+        while (scanFile.hasNextLine()) {
             if (cptr >= 9)
                 throw new Exception("Too many line in file");
 
-            String line = scan.nextLine();
+            String line = scanFile.nextLine();
             if (line.length() != 9)
                 throw new Exception("Not enough element in line " + cptr);
 
@@ -49,7 +49,7 @@ public class GameClass {
             cptr += 1;
         }
 
-        scan.close();
+        scanFile.close();
 
         if (cptr < 9)
             throw new Exception("Not enough line in file");
@@ -58,7 +58,7 @@ public class GameClass {
         this.quit = false;
         this.undoStack = new MoveStack();
         this.redoStack = new MoveStack();
-        scan = new Scanner(System.in);
+        this.scan = new Scanner(System.in);
     }
 
     public void quit() {
@@ -70,11 +70,7 @@ public class GameClass {
 
         System.out.println("[q/Q] : Quit game\n[s/S] : solver\n[m/M] : Move element in game\n[r/R] : redo\n[u/U] : undo");
 
-        String input = "";
-        while (input.isEmpty()) {
-            input = scan.nextLine();
-        }
-        switch(input.charAt(0)) {
+        switch(scan.next().charAt(0)) {
             case 'q' : quit();
                         break;
             case 'Q' : quit();
