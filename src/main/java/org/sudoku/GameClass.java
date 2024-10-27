@@ -69,28 +69,44 @@ public class GameClass {
     public void getAction() throws Exception {
 
         System.out.println("[q/Q] : Quit game\n[s/S] : solver\n[m/M] : Move element in game\n[r/R] : redo\n[u/U] : undo");
+        while (true) {
 
-        switch(scan.next().charAt(0)) {
-            case 'q' : quit();
-                        break;
-            case 'Q' : quit();
-                        break;
-            case 's' : solver();
-                        break;
-            case 'S' : solver();
-                        break;
-            case 'm' : Triplet<Integer, Integer, Number> m = getInput();
-                        move(m.getValue0(), m.getValue1(), m.getValue2());
-                        break;
-            case 'r': redo();
-                        break;
-            case 'R': redo();
-                        break;
-            case 'u': undo();
-                        break;
-            case 'U': undo();
-                        break;
-            default: break;
+
+            String input = scan.nextLine();
+            if (input.isEmpty())
+                continue;
+            switch (input.charAt(0)) {
+                case 'q':
+                    quit();
+                    return;
+                case 'Q':
+                    quit();
+                    return;
+                case 's':
+                    solver();
+                    return;
+                case 'S':
+                    solver();
+                    return;
+                case 'm':
+                    Triplet<Integer, Integer, Number> m = getInput();
+                    move(m.getValue0(), m.getValue1(), m.getValue2());
+                    return;
+                case 'r':
+                    redo();
+                    return;
+                case 'R':
+                    redo();
+                    return;
+                case 'u':
+                    undo();
+                    return;
+                case 'U':
+                    undo();
+                    return;
+                default:
+                    break;
+            }
         }
 
     }
