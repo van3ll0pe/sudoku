@@ -305,6 +305,7 @@ public class GameClass {
             display();
             getAction();
         }
+        this.scan.close();
         if (!this.quit)
             display();
     }
