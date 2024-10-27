@@ -11,12 +11,24 @@ public class GameClass {
     private MoveStack redoStack;
     private Scanner scan;
 
+    private void closeScanner() {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (this.scan != null) {
+                this.scan.close();
+                System.out.println("Scanner closed due to program shutdown.");
+            }
+        }));
+    }
+
     public GameClass() throws Exception{
         this.grid = new Grid(9, 9);
         this.quit = false;
         this.undoStack = new MoveStack();
         this.redoStack = new MoveStack();
-        scan = new Scanner(System.in);
+        this.scan = new Scanner(System.in);
+
+        closeScanner();
+
     }
 
     public GameClass(Number[][] tab) throws Exception{
@@ -24,7 +36,9 @@ public class GameClass {
         this.quit = false;
         this.undoStack = new MoveStack();
         this.redoStack = new MoveStack();
-        scan = new Scanner(System.in);
+        this.scan = new Scanner(System.in);
+
+        closeScanner();
     }
 
     public GameClass(File file) throws Exception {
@@ -59,6 +73,8 @@ public class GameClass {
         this.undoStack = new MoveStack();
         this.redoStack = new MoveStack();
         this.scan = new Scanner(System.in);
+
+        closeScanner();
     }
 
     public void quit() {
@@ -75,16 +91,13 @@ public class GameClass {
             String input = scan.nextLine();
             if (input.isEmpty())
                 continue;
+
             switch (input.charAt(0)) {
                 case 'q':
-                    quit();
-                    return;
                 case 'Q':
                     quit();
                     return;
                 case 's':
-                    solver();
-                    return;
                 case 'S':
                     solver();
                     return;
@@ -93,14 +106,10 @@ public class GameClass {
                     move(m.getValue0(), m.getValue1(), m.getValue2());
                     return;
                 case 'r':
-                    redo();
-                    return;
                 case 'R':
                     redo();
                     return;
                 case 'u':
-                    undo();
-                    return;
                 case 'U':
                     undo();
                     return;
@@ -114,7 +123,6 @@ public class GameClass {
     private Triplet<Integer, Integer, Number> getInput() {
 
         System.out.println("Choose X position : (1 - " + (this.grid.get_width()) + ") : ");
-
         int x = 0;
         do {
             x = scan.nextInt(); //the x position
@@ -317,9 +325,14 @@ public class GameClass {
             display();
             getAction();
         }
-        this.scan.close();
+
         if (!this.quit)
             display();
+
+        if (this.scan != null) {
+            this.scan.close();
+            this.scan = null;
+        }
     }
 
     public boolean backtracking(int x, int y) throws Exception{
